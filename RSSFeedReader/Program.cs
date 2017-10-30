@@ -1,7 +1,9 @@
-﻿using RSSFeedReader.logic.rssfeed;
+﻿using RSSFeedReader.auxiliary;
+using RSSFeedReader.logic.RSSFeedLogic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.ServiceModel.Syndication;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,19 +18,19 @@ namespace RSSFeedReader
         static void Main()
         {
 #if DEBUG
-            Test();
+            //Test();
 #endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainView());
         }
 
-        static void Test()
+        static async void Test()
         {
-            Constants.Log("Debug build enabled", "Running a couple of tests");
+            Util.Log("Debug build enabled", "Running a couple of tests");
             RSSFeedHandler rssFeedHandler = new RSSFeedHandler();
-            rssFeedHandler.GetRSSFeedAsync("https://atwar.blogs.nytimes.com/feed/");
-            rssFeedHandler.GetRSSFeedAsync("https://rss.acast.com/sparpodcast");
+            SyndicationFeed feed1 = await rssFeedHandler.GetRSSFeedAsync("https://rss.acast.com/sparpodcast");
+            Util.Log(Util.Atom10ToJsonString(feed1.GetAtom10Formatter()));
         }
     }
 }

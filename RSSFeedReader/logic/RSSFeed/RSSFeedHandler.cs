@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static RSSFeedReader.Models.RSSFeed;
 
-namespace RSSFeedReader.logic.rssfeed
+namespace RSSFeedReader.logic.RSSFeedLogic
 {
     class RSSFeedHandler
     {
@@ -31,6 +31,11 @@ namespace RSSFeedReader.logic.rssfeed
             }
 
             throw new ArgumentException(string.Format("Feed '{0}' does not exist in local storage", name));
+        }
+
+        public SyndicationFeed GetRSSFeedSync(string url)
+        {
+            return RSSFeedRetrieval.GetRSSFeedByUrl(url).Result;
         }
 
         public async Task<SyndicationFeed> GetRSSFeedAsync(string url)

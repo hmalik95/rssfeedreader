@@ -12,6 +12,28 @@ namespace RSSFeedReader.Models
     /// </summary>
     class RSSFeed
     {
+        public static readonly string[] Categories = new string[]
+        {
+            "Arts",
+            "Business",
+            "Games and Hobbies",
+            "News and Politics",
+            "Religion and Spirituality",
+            "Science and Medicine",
+            "Other"
+        };
+
+        public static readonly string[] UpdateFrequencyUnits = new string[]
+        {
+            "Century",
+            "Year",
+            "Month",
+            "Week",
+            "Hour",
+            "Minute",
+            "Second"
+        };
+
         string _name;
         string _url;
         RSSFeedHistory _rssFeedHistory;
