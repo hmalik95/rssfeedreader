@@ -7,22 +7,11 @@ using System.Threading.Tasks;
 
 namespace RSSFeedReader.errorhandling.exceptions
 {
-
-    class UrlInvalidException : Exception
+    class UrlInvalidException : BaseException
     {
-        string _dialogErrorMsg;
-
         public UrlInvalidException() : base()
         {
             _dialogErrorMsg = ConfigurationManager.AppSettings["UrlInvalidDialogError"];
-        }
-
-        public string DialogErrorMsg
-        {
-            get
-            {
-                return _dialogErrorMsg;
-            }
         }
     }
 }

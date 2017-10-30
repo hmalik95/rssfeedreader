@@ -51,6 +51,9 @@
   <ItemGroup>
     <Compile Include="auxiliary\Constants.cs" />
     <Compile Include="auxiliary\Util.cs" />
+    <Compile Include="errorhandling\exceptions\BaseException.cs" />
+    <Compile Include="errorhandling\exceptions\RSSFeedNameAlreadyExistsException.cs" />
+    <Compile Include="errorhandling\exceptions\UpdateFrequencyNotANumberException.cs" />
     <Compile Include="errorhandling\exceptions\UrlInvalidException.cs" />
     <Compile Include="errorhandling\InputValidation.cs" />
     <Compile Include="logic\RSSFeed\CustomXmlReader.cs" />

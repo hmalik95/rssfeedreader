@@ -1,6 +1,7 @@
 ﻿using RSSFeedReader.auxiliary;
 using RSSFeedReader.errorhandling;
 using RSSFeedReader.errorhandling.exceptions;
+using RSSFeedReader.logic.RSSFeedLogic;
 using RSSFeedReader.ui;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace RSSFeedReader
 {
     public partial class MainView : Form
     {
+        RSSFeedHandler _rssFeedHandler;
+
         public MainView()
         {
             InitializeComponent();
@@ -23,6 +26,7 @@ namespace RSSFeedReader
 
         private void MainView_Load(object sender, EventArgs e)
         {
+            _rssFeedHandler = new RSSFeedHandler();
             PopulateViews();
             SetListeners();
         }
@@ -53,11 +57,17 @@ namespace RSSFeedReader
             Close();
         }
 
+        AddFeedPopup addFeedPopup = null;
         void AddNewFeed(object sender, EventArgs e)
         {
             try {
-                using (AddFeedPopup addFeedPopup = new AddFeedPopup())
+                if (addFeedPopup == null)
                 {
+                    addFeedPopup = new AddFeedPopup();
+                }
+                using (addFeedPopup)
+                {
+                    addFeedPopup.Reuse = true;
                     addFeedPopup.ShowDialog();
                     // If the cancel button was used we stop
                     if (addFeedPopup.DialogResult == DialogResult.Cancel)
@@ -70,18 +80,33 @@ namespace RSSFeedReader
                     string feedName = addFeedPopup.FeedName;
                     string feedUrl = addFeedPopup.FeedUrl;
                     string feedCategory = addFeedPopup.FeedCategory;
-                    string feedUpdateFrequencyValue = addFeedPopup.FeedUpdateFrequencyValue;
+
+                    // Try and parse the entered frequency value
+                    int feedUpdateFrequencyValue;
+                    string feedUpdateFrequencyValueStr = addFeedPopup.FeedUpdateFrequencyValue;
+                    if (!int.TryParse(feedUpdateFrequencyValueStr, 
+                        out feedUpdateFrequencyValue))
+                    {
+                        throw new UpdateFrequencyNotANumberException(feedUpdateFrequencyValueStr);
+                    }
+
+                    // Check validity of entered url
                     string feedUpdateFrequencyUnit = addFeedPopup.FeedUpdateFrequencyUnit;
                     if (!InputValidation.IsUrlValid(feedUrl))
                     {
+                        
                         throw new UrlInvalidException();
                     }
-                    // TODO implement feed adding in handler
+                    _rssFeedHandler.AddNewRSSFeed(feedName, feedUrl, feedCategory, feedUpdateFrequencyValue, feedUpdateFrequencyValueStr);
+                    addFeedPopup.Reuse = false;
+                    addFeedPopup = null;
                 }
             }
-            catch (UrlInvalidException ex)
+            catch (BaseException ex)
             {
-                MessageBox.Show(ex.DialogErrorMsg);
+                addFeedPopup.Reuse = true;
+                MessageBox.Show(ex.DialogErrorMessage);
+                AddNewFeed(sender, e);
             }
         }
 

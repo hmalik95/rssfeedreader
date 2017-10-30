@@ -11,14 +11,37 @@
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        #region make dialog reusable after wrong input
+
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (_reuse)
             {
-                components.Dispose();
+                return;
             }
+
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+
+                // Dispose stuff here
+            }
+
             base.Dispose(disposing);
         }
+
+        bool _reuse;
+        public bool Reuse
+        {
+            set
+            {
+                _reuse = value;
+            }
+        }
+        #endregion
 
         #region Windows Form Designer generated code
 

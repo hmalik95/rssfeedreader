@@ -1,7 +1,9 @@
-﻿using RSSFeedReader.Models;
+﻿using RSSFeedReader.errorhandling.exceptions;
+using RSSFeedReader.Models;
 using RSSFeedReader.network;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.ServiceModel.Syndication;
 using System.Text;
@@ -18,19 +20,25 @@ namespace RSSFeedReader.logic.RSSFeedLogic
 
         }
 
-        public RSSFeed GetRSSFeed(string name, string url = null, int updateFrequencyValue = -1, UpdateFrequencyUnit updateFrequencyUnit = UpdateFrequencyUnit.Second)
+        public void AddNewRSSFeed(string name, string url, string category, int updateFrequencyValue, string updateFrequencyUnit)
         {
-
-            if (FeedExists(name))
+            string rssFeedPath = Path.Combine(Constants.WORKING_DIRECTORY, Constants.RSSFEED_DIRECTORY);
+            if (!Directory.Exists(rssFeedPath))
             {
-                return ReadFeedFromFile(name);
-            } 
-            else if (url != null && updateFrequencyValue != -1)
-            {
-                return new RSSFeed(name, url, updateFrequencyValue, updateFrequencyUnit);
+                Directory.CreateDirectory(rssFeedPath);
             }
 
-            throw new ArgumentException(string.Format("Feed '{0}' does not exist in local storage", name));
+            string[] allRSSFeedPaths = Directory.GetFiles(rssFeedPath);
+
+            foreach(string path in allRSSFeedPaths)
+            {
+                if (string.Equals(Path.GetFileName(path).Split('.')[0].ToLower(), name.ToLower()))
+                {
+                    throw new RSSFeedNameAlreadyExistsException(name);
+                }
+            }
+
+
         }
 
         public SyndicationFeed GetRSSFeedSync(string url)
