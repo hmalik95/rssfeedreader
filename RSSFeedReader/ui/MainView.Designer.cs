@@ -44,6 +44,8 @@
             this.btnEdit = new System.Windows.Forms.Button();
             this.btnDelete = new System.Windows.Forms.Button();
             this.rssFeedTextBox = new System.Windows.Forms.RichTextBox();
+            this.lstBoxFeedItems = new System.Windows.Forms.ListBox();
+            this.lblItemListBox = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,7 +55,7 @@
             this.menuBarMenuButton});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(660, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1040, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -75,43 +77,43 @@
             // addNewFeedToolStripMenuItem
             // 
             this.addNewFeedToolStripMenuItem.Name = "addNewFeedToolStripMenuItem";
-            this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.addNewFeedToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.addNewFeedToolStripMenuItem.Text = "Add new feed";
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(144, 6);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(144, 6);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(144, 6);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(144, 6);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(144, 6);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(144, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             // 
             // lstBoxFeed
@@ -126,7 +128,7 @@
             // lblFeed
             // 
             this.lblFeed.AutoSize = true;
-            this.lblFeed.Location = new System.Drawing.Point(79, 41);
+            this.lblFeed.Location = new System.Drawing.Point(12, 41);
             this.lblFeed.Name = "lblFeed";
             this.lblFeed.Size = new System.Drawing.Size(36, 13);
             this.lblFeed.TabIndex = 2;
@@ -134,36 +136,55 @@
             // 
             // btnEdit
             // 
-            this.btnEdit.Location = new System.Drawing.Point(13, 250);
+            this.btnEdit.Location = new System.Drawing.Point(100, 250);
             this.btnEdit.Name = "btnEdit";
-            this.btnEdit.Size = new System.Drawing.Size(75, 23);
+            this.btnEdit.Size = new System.Drawing.Size(33, 23);
             this.btnEdit.TabIndex = 3;
             this.btnEdit.Text = "Edit";
             this.btnEdit.UseVisualStyleBackColor = true;
             // 
             // btnDelete
             // 
-            this.btnDelete.Location = new System.Drawing.Point(114, 250);
+            this.btnDelete.Location = new System.Drawing.Point(139, 250);
             this.btnDelete.Name = "btnDelete";
-            this.btnDelete.Size = new System.Drawing.Size(75, 23);
+            this.btnDelete.Size = new System.Drawing.Size(50, 23);
             this.btnDelete.TabIndex = 4;
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             // 
             // rssFeedTextBox
             // 
-            this.rssFeedTextBox.Location = new System.Drawing.Point(206, 57);
+            this.rssFeedTextBox.Location = new System.Drawing.Point(390, 57);
             this.rssFeedTextBox.Name = "rssFeedTextBox";
             this.rssFeedTextBox.ReadOnly = true;
-            this.rssFeedTextBox.Size = new System.Drawing.Size(442, 333);
+            this.rssFeedTextBox.Size = new System.Drawing.Size(638, 485);
             this.rssFeedTextBox.TabIndex = 5;
             this.rssFeedTextBox.Text = "";
+            // 
+            // lstBoxFeedItems
+            // 
+            this.lstBoxFeedItems.FormattingEnabled = true;
+            this.lstBoxFeedItems.Location = new System.Drawing.Point(196, 57);
+            this.lstBoxFeedItems.Name = "lstBoxFeedItems";
+            this.lstBoxFeedItems.Size = new System.Drawing.Size(188, 485);
+            this.lstBoxFeedItems.TabIndex = 6;
+            // 
+            // lblItemListBox
+            // 
+            this.lblItemListBox.AutoSize = true;
+            this.lblItemListBox.Location = new System.Drawing.Point(196, 40);
+            this.lblItemListBox.Name = "lblItemListBox";
+            this.lblItemListBox.Size = new System.Drawing.Size(32, 13);
+            this.lblItemListBox.TabIndex = 7;
+            this.lblItemListBox.Text = "Items";
             // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(660, 402);
+            this.ClientSize = new System.Drawing.Size(1040, 547);
+            this.Controls.Add(this.lblItemListBox);
+            this.Controls.Add(this.lstBoxFeedItems);
             this.Controls.Add(this.rssFeedTextBox);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.btnEdit);
@@ -199,6 +220,8 @@
         private System.Windows.Forms.Button btnEdit;
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.RichTextBox rssFeedTextBox;
+        private System.Windows.Forms.ListBox lstBoxFeedItems;
+        private System.Windows.Forms.Label lblItemListBox;
     }
 
 }

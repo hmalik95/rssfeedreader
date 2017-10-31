@@ -1,7 +1,9 @@
 ﻿using RSSFeedReader.auxiliary;
 using RSSFeedReader.errorhandling;
 using RSSFeedReader.errorhandling.exceptions;
+using RSSFeedReader.logic.rssfeed;
 using RSSFeedReader.logic.RSSFeedLogic;
+using RSSFeedReader.models;
 using RSSFeedReader.Models;
 using RSSFeedReader.ui;
 using System;
@@ -19,6 +21,7 @@ namespace RSSFeedReader
     public partial class MainView : Form
     {
         RSSFeedHandler _rssFeedHandler;
+        List<RSSFeedItem> _currentRssFeedItems;
 
         public MainView()
         {
@@ -49,6 +52,7 @@ namespace RSSFeedReader
             btnEdit.Click += EditSelectedFeed;
             btnDelete.Click += DeleteSelectedFeed;
             lstBoxFeed.Click += SelectFeedToDisplay;
+            lstBoxFeedItems.Click += ShowRSSFeedItemDetails;
         }
 
         void SetFeeds()
@@ -78,11 +82,27 @@ namespace RSSFeedReader
             lstBoxFeed.SelectedIndex = index;
             RSSFeed rssFeed = GetSelectedFeed();
             rssFeedTextBox.Text = rssFeed.LastFetchedFeed;
+            _currentRssFeedItems = RSSFeedXmlDataParser.GetRSSFeedItems(rssFeed.LastFetchedFeed);
+            SetRSSFeedItems();
+        }
+
+        void ShowRSSFeedItemDetails(object sender, EventArgs e)
+        {
+            int selectedIndex = lstBoxFeedItems.SelectedIndex;
+            RSSFeedItem rssFeedItem = _currentRssFeedItems[selectedIndex];
+            rssFeedTextBox.Text = rssFeedItem.Summary;
+        }
+
+        void SetRSSFeedItems()
+        {
+            foreach(RSSFeedItem item in _currentRssFeedItems)
+            {
+                lstBoxFeedItems.Items.Add(item.Title);
+            }
         }
         #endregion
 
         #region event listeners
-
         void SelectFeedToDisplay(object sender, EventArgs e)
         {
             int selectedIndex = ((ListBox)sender).SelectedIndex;

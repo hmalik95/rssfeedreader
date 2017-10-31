@@ -58,9 +58,11 @@
     <Compile Include="errorhandling\InputValidation.cs" />
     <Compile Include="logic\rssfeed\CustomXmlReader.cs" />
     <Compile Include="logic\rssfeed\RSSFeedHandler.cs" />
+    <Compile Include="logic\rssfeed\RSSFeedXmlDataParser.cs" />
     <Compile Include="logic\rssfeed\Utf8StringWriter.cs" />
     <Compile Include="models\BaseModel.cs" />
     <Compile Include="models\RSSFeed.cs" />
+    <Compile Include="models\RSSFeedItem.cs" />
     <Compile Include="network\RSSFeedRetrieval.cs" />
     <Compile Include="ui\AddFeedPopup.cs">
       <SubType>Form</SubType>
