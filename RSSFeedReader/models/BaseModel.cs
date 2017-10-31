@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace RSSFeedReader.models
 {
 
-    abstract class BaseModel
+    public abstract class BaseModel
     {
         DateTime _creationDate;
 
@@ -24,6 +25,8 @@ namespace RSSFeedReader.models
             }
         }
 
+        abstract public string GetXmlRepresentation();
+        
         abstract public void Save();
     }
 }

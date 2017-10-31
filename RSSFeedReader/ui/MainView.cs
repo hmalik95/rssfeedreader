@@ -2,6 +2,7 @@
 using RSSFeedReader.errorhandling;
 using RSSFeedReader.errorhandling.exceptions;
 using RSSFeedReader.logic.RSSFeedLogic;
+using RSSFeedReader.Models;
 using RSSFeedReader.ui;
 using System;
 using System.Collections.Generic;
@@ -31,10 +32,14 @@ namespace RSSFeedReader
             SetListeners();
         }
 
-        #region instantiation
+        #region instantiation and refresh
         void PopulateViews()
         {
             SetFeeds();
+            if (_rssFeedHandler.RSSFeeds.Count() > 0)
+            {
+                ShowFeed(0);
+            }
         }
 
         void SetListeners()
@@ -43,68 +48,101 @@ namespace RSSFeedReader
             addNewFeedToolStripMenuItem.Click += AddNewFeed;
             btnEdit.Click += EditSelectedFeed;
             btnDelete.Click += DeleteSelectedFeed;
+            lstBoxFeed.Click += SelectFeedToDisplay;
         }
 
         void SetFeeds()
         {
+            lstBoxFeed.Items.Clear();
+            foreach(string feedName in _rssFeedHandler.RSSFeeds.Keys)
+            {
+                lstBoxFeed.Items.Add(feedName);
+            }
+        }
 
+        void RefreshFeedToLastItem()
+        {
+            this.Invoke(new Action(() => {
+                SetFeeds();
+                ShowFeed(_rssFeedHandler.RSSFeeds.Count() - 1);
+            }));
+        }
+
+        void ShowFeed(int index)
+        {
+            if (_rssFeedHandler.RSSFeeds.Count() < 1)
+            {
+                rssFeedTextBox.Text = "No feeds";
+                return;
+            }
+            lstBoxFeed.SelectedIndex = index;
+            RSSFeed rssFeed = GetSelectedFeed();
+            rssFeedTextBox.Text = rssFeed.LastFetchedFeed;
         }
         #endregion
 
         #region event listeners
+
+        void SelectFeedToDisplay(object sender, EventArgs e)
+        {
+            int selectedIndex = ((ListBox)sender).SelectedIndex;
+            ShowFeed(selectedIndex);
+        }
+
         void Close(object sender, EventArgs e)
         {
             Close();
         }
 
-        AddFeedPopup addFeedPopup = null;
+        AddFeedPopup _addFeedPopup = null;
         void AddNewFeed(object sender, EventArgs e)
         {
             try {
-                if (addFeedPopup == null)
+                if (_addFeedPopup == null)
                 {
-                    addFeedPopup = new AddFeedPopup();
+                    _addFeedPopup = new AddFeedPopup();
                 }
-                using (addFeedPopup)
+                using (_addFeedPopup)
                 {
-                    addFeedPopup.Reuse = true;
-                    addFeedPopup.ShowDialog();
+                    _addFeedPopup.Reuse = true;
+                    _addFeedPopup.ShowDialog();
                     // If the cancel button was used we stop
-                    if (addFeedPopup.DialogResult == DialogResult.Cancel)
+                    if (_addFeedPopup.DialogResult == DialogResult.Cancel)
                     {
-                        addFeedPopup.Close();
+                        _addFeedPopup.Close();
                         return;
                     }
 
                     // Else continue and handle adding of new rss feed
-                    string feedName = addFeedPopup.FeedName;
-                    string feedUrl = addFeedPopup.FeedUrl;
-                    string feedCategory = addFeedPopup.FeedCategory;
+                    string feedName = _addFeedPopup.FeedName;
+                    string feedUrl = _addFeedPopup.FeedUrl;
+                    string feedCategory = _addFeedPopup.FeedCategory;
+
+                    // Check validity of entered url
+                    string feedUpdateFrequencyUnit = _addFeedPopup.FeedUpdateFrequencyUnit;
+                    if (!InputValidation.IsUrlValid(feedUrl))
+                    {
+
+                        throw new UrlInvalidException();
+                    }
 
                     // Try and parse the entered frequency value
                     int feedUpdateFrequencyValue;
-                    string feedUpdateFrequencyValueStr = addFeedPopup.FeedUpdateFrequencyValue;
+                    string feedUpdateFrequencyValueStr = _addFeedPopup.FeedUpdateFrequencyValue;
                     if (!int.TryParse(feedUpdateFrequencyValueStr, 
                         out feedUpdateFrequencyValue))
                     {
                         throw new UpdateFrequencyNotANumberException(feedUpdateFrequencyValueStr);
                     }
 
-                    // Check validity of entered url
-                    string feedUpdateFrequencyUnit = addFeedPopup.FeedUpdateFrequencyUnit;
-                    if (!InputValidation.IsUrlValid(feedUrl))
-                    {
-                        
-                        throw new UrlInvalidException();
-                    }
-                    _rssFeedHandler.AddNewRSSFeed(feedName, feedUrl, feedCategory, feedUpdateFrequencyValue, feedUpdateFrequencyValueStr);
-                    addFeedPopup.Reuse = false;
-                    addFeedPopup = null;
+                    _rssFeedHandler.AddNewRSSFeedAsync(feedName, feedUrl, feedCategory, feedUpdateFrequencyValue, feedUpdateFrequencyUnit, RefreshFeedToLastItem);
+                    _addFeedPopup.Reuse = false;
+                    _addFeedPopup = null;
                 }
             }
             catch (BaseException ex)
             {
-                addFeedPopup.Reuse = true;
+                _addFeedPopup.Reuse = true;
                 MessageBox.Show(ex.DialogErrorMessage);
                 AddNewFeed(sender, e);
             }
@@ -117,12 +155,21 @@ namespace RSSFeedReader
 
         void DeleteSelectedFeed(object sender, EventArgs e)
         {
-
+            if (_rssFeedHandler.RSSFeeds.Count() < 1)
+            {
+                return;
+            }
+            RSSFeed feed = GetSelectedFeed();
+            _rssFeedHandler.DeleteFeed(feed, RefreshFeedToLastItem);
         }
         #endregion
 
-        #region data manipulation
-
+        #region helpers functions
+        RSSFeed GetSelectedFeed()
+        {
+            string feedName = lstBoxFeed.SelectedItem.ToString();
+            return _rssFeedHandler.RSSFeeds[feedName];
+        }
         #endregion
     }
 }

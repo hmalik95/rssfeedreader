@@ -56,11 +56,11 @@
     <Compile Include="errorhandling\exceptions\UpdateFrequencyNotANumberException.cs" />
     <Compile Include="errorhandling\exceptions\UrlInvalidException.cs" />
     <Compile Include="errorhandling\InputValidation.cs" />
-    <Compile Include="logic\RSSFeed\CustomXmlReader.cs" />
-    <Compile Include="logic\RSSFeed\RSSFeedHandler.cs" />
+    <Compile Include="logic\rssfeed\CustomXmlReader.cs" />
+    <Compile Include="logic\rssfeed\RSSFeedHandler.cs" />
+    <Compile Include="logic\rssfeed\Utf8StringWriter.cs" />
     <Compile Include="models\BaseModel.cs" />
     <Compile Include="models\RSSFeed.cs" />
-    <Compile Include="models\RSSFeedHistory.cs" />
     <Compile Include="network\RSSFeedRetrieval.cs" />
     <Compile Include="ui\AddFeedPopup.cs">
       <SubType>Form</SubType>
@@ -105,9 +105,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="logic\Parsing\" />
-    <Folder Include="logic\Subscription\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
