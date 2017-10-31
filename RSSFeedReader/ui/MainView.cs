@@ -37,10 +37,20 @@ namespace RSSFeedReader
         void PopulateViews()
         {
             SetFeeds();
+            SetFilters();
             if (RSSFeedHandler.GetInstance.RSSFeeds.Count() > 0)
             {
                 ShowFeed(0);
             }
+        }
+
+        void SetFilters()
+        {
+            cbFeedCategoryFilter.Items.Clear();
+            cbFeedCategoryFilter.Items.Add("All");
+            cbFeedCategoryFilter.Items.AddRange(RSSFeed.Categories);
+            cbFeedCategoryFilter.Items.AddRange(CategoryHandler.GetInstance.Categories.ToArray());
+            cbFeedCategoryFilter.SelectedIndex = 0;
         }
 
         void SetListeners()
@@ -51,12 +61,22 @@ namespace RSSFeedReader
             btnDelete.Click += DeleteSelectedFeed;
             lstBoxFeed.Click += SelectFeedToDisplay;
             lstBoxFeedItems.Click += ShowRSSFeedItemDetails;
+            cbFeedCategoryFilter.SelectionChangeCommitted += FilterFeeds;
         }
 
         void SetFeeds()
         {
             lstBoxFeed.Items.Clear();
             foreach(RSSFeed feed in RSSFeedHandler.GetInstance.RSSFeeds.Values)
+            {
+                lstBoxFeed.Items.Add(string.Format("{0} ({1})", feed.Name, feed.Category));
+            }
+        }
+
+        void SetFeeds(List<RSSFeed> feeds)
+        {
+            lstBoxFeed.Items.Clear();
+            foreach (RSSFeed feed in feeds)
             {
                 lstBoxFeed.Items.Add(string.Format("{0} ({1})", feed.Name, feed.Category));
             }
@@ -102,10 +122,27 @@ namespace RSSFeedReader
         #endregion
 
         #region event listeners
+        void FilterFeeds(object sender, EventArgs e)
+        {
+            string category = cbFeedCategoryFilter.SelectedItem.ToString();
+
+            if (string.Equals(category, "All"))
+            {
+                SetFeeds(RSSFeedHandler.GetInstance.RSSFeeds.Values.ToList());
+                return;
+            }
+
+            List<RSSFeed> filteredFeedList = RSSFeedHandler.GetInstance.RSSFeeds.Values.Where<RSSFeed>(x => string.Equals(x.Category, category)).ToList();
+            SetFeeds(filteredFeedList);
+        }
+
         void EditCategories(object sender, EventArgs e)
         {
-            EditCategoriesPopup popup = new EditCategoriesPopup();
-            popup.ShowDialog();
+            using (EditCategoriesPopup popup = new EditCategoriesPopup())
+            {
+                popup.ShowDialog();
+            }
+            SetFilters();
         }
 
         void SelectFeedToDisplay(object sender, EventArgs e)
