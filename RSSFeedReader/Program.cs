@@ -21,20 +21,10 @@ namespace RSSFeedReader
         {
 #if DEBUG
             Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-us");
-            //Test();
 #endif
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainView());
-        }
-
-        static async void Test()
-        {
-            return;
-            Util.Log("Debug build enabled", "Running a couple of tests");
-            RSSFeedHandler rssFeedHandler = new RSSFeedHandler();
-            SyndicationFeed feed1 = await rssFeedHandler.GetRSSFeedAsync("https://rss.acast.com/sparpodcast");
-            Util.Log(Util.Atom10ToJsonString(feed1.GetAtom10Formatter()));
         }
     }
 }

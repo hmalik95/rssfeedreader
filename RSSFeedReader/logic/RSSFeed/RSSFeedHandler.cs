@@ -24,11 +24,31 @@ namespace RSSFeedReader.logic.RSSFeedLogic
             }
         }
 
-        public RSSFeedHandler()
+        private RSSFeedHandler()
         {
             _rssFeedPath = Path.Combine(Constants.WORKING_DIRECTORY, Constants.RSSFEED_DIRECTORY);
             LoadAllRSSFeeds();
         }
+
+        #region singleton
+        private static RSSFeedHandler _instance;
+        private static object _lockObject = new object();
+
+        public static RSSFeedHandler GetInstance
+        {
+            get
+            {
+                lock(_lockObject)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new RSSFeedHandler();
+                    }
+                    return _instance;
+                }
+            }
+        }
+        #endregion
 
         public void AddNewRSSFeedAsync(string name, string url, string category, int updateFrequencyValue, string updateFrequencyUnit, Action onComplete = null)
         {

@@ -1,4 +1,5 @@
-﻿using RSSFeedReader.Models;
+﻿using RSSFeedReader.logic.rssfeed;
+using RSSFeedReader.Models;
 using System;
 using System.Windows.Forms;
 
@@ -19,9 +20,17 @@ namespace RSSFeedReader.ui
             PopulateViews();
         }
 
+        public void RefreshCategories()
+        {
+            cbCategory.Items.Clear();
+            cbCategory.Items.AddRange(RSSFeed.Categories);
+            cbCategory.Items.AddRange(CategoryHandler.GetInstance.Categories.ToArray());
+        }
+
         void PopulateViews()
         {
             cbCategory.Items.AddRange(RSSFeed.Categories);
+            cbCategory.Items.AddRange(CategoryHandler.GetInstance.Categories.ToArray());
             cbCategory.SelectedIndex = 0;
             cbUpdateFrequency.Items.AddRange(RSSFeed.UpdateFrequencyUnits);
             cbUpdateFrequency.SelectedIndex = 0;

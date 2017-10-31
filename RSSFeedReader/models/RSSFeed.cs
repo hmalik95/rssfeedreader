@@ -21,12 +21,6 @@ namespace RSSFeedReader.Models
 
         public static readonly string[] Categories = new string[]
         {
-            "Arts",
-            "Business",
-            "Games and Hobbies",
-            "News and Politics",
-            "Religion and Spirituality",
-            "Science and Medicine",
             "Other"
         };
 

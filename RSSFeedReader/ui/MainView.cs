@@ -20,7 +20,6 @@ namespace RSSFeedReader
 {
     public partial class MainView : Form
     {
-        RSSFeedHandler _rssFeedHandler;
         List<RSSFeedItem> _currentRssFeedItems;
 
         public MainView()
@@ -30,7 +29,6 @@ namespace RSSFeedReader
 
         private void MainView_Load(object sender, EventArgs e)
         {
-            _rssFeedHandler = new RSSFeedHandler();
             PopulateViews();
             SetListeners();
         }
@@ -39,7 +37,7 @@ namespace RSSFeedReader
         void PopulateViews()
         {
             SetFeeds();
-            if (_rssFeedHandler.RSSFeeds.Count() > 0)
+            if (RSSFeedHandler.GetInstance.RSSFeeds.Count() > 0)
             {
                 ShowFeed(0);
             }
@@ -49,7 +47,7 @@ namespace RSSFeedReader
         {
             exitToolStripMenuItem.Click += Close;
             addNewFeedToolStripMenuItem.Click += AddNewFeed;
-            btnEdit.Click += EditSelectedFeed;
+            toolStripMenuItemEditCategories.Click += EditCategories;
             btnDelete.Click += DeleteSelectedFeed;
             lstBoxFeed.Click += SelectFeedToDisplay;
             lstBoxFeedItems.Click += ShowRSSFeedItemDetails;
@@ -58,9 +56,9 @@ namespace RSSFeedReader
         void SetFeeds()
         {
             lstBoxFeed.Items.Clear();
-            foreach(string feedName in _rssFeedHandler.RSSFeeds.Keys)
+            foreach(RSSFeed feed in RSSFeedHandler.GetInstance.RSSFeeds.Values)
             {
-                lstBoxFeed.Items.Add(feedName);
+                lstBoxFeed.Items.Add(string.Format("{0} ({1})", feed.Name, feed.Category));
             }
         }
 
@@ -68,13 +66,13 @@ namespace RSSFeedReader
         {
             this.Invoke(new Action(() => {
                 SetFeeds();
-                ShowFeed(_rssFeedHandler.RSSFeeds.Count() - 1);
+                ShowFeed(RSSFeedHandler.GetInstance.RSSFeeds.Count() - 1);
             }));
         }
 
         void ShowFeed(int index)
         {
-            if (_rssFeedHandler.RSSFeeds.Count() < 1)
+            if (RSSFeedHandler.GetInstance.RSSFeeds.Count() < 1)
             {
                 rssFeedTextBox.Text = "No feeds";
                 return;
@@ -95,6 +93,7 @@ namespace RSSFeedReader
 
         void SetRSSFeedItems()
         {
+            lstBoxFeedItems.Items.Clear();
             foreach(RSSFeedItem item in _currentRssFeedItems)
             {
                 lstBoxFeedItems.Items.Add(item.Title);
@@ -103,6 +102,12 @@ namespace RSSFeedReader
         #endregion
 
         #region event listeners
+        void EditCategories(object sender, EventArgs e)
+        {
+            EditCategoriesPopup popup = new EditCategoriesPopup();
+            popup.ShowDialog();
+        }
+
         void SelectFeedToDisplay(object sender, EventArgs e)
         {
             int selectedIndex = ((ListBox)sender).SelectedIndex;
@@ -121,6 +126,10 @@ namespace RSSFeedReader
                 if (_addFeedPopup == null)
                 {
                     _addFeedPopup = new AddFeedPopup();
+                }
+                else
+                {
+                    _addFeedPopup.RefreshCategories();
                 }
                 using (_addFeedPopup)
                 {
@@ -155,7 +164,7 @@ namespace RSSFeedReader
                         throw new UpdateFrequencyNotANumberException(feedUpdateFrequencyValueStr);
                     }
 
-                    _rssFeedHandler.AddNewRSSFeedAsync(feedName, feedUrl, feedCategory, feedUpdateFrequencyValue, feedUpdateFrequencyUnit, RefreshFeedToLastItem);
+                    RSSFeedHandler.GetInstance.AddNewRSSFeedAsync(feedName, feedUrl, feedCategory, feedUpdateFrequencyValue, feedUpdateFrequencyUnit, RefreshFeedToLastItem);
                     _addFeedPopup.Reuse = false;
                     _addFeedPopup = null;
                 }
@@ -168,27 +177,21 @@ namespace RSSFeedReader
             }
         }
 
-        void EditSelectedFeed(object sender, EventArgs e)
-        {
-
-        }
-
         void DeleteSelectedFeed(object sender, EventArgs e)
         {
-            if (_rssFeedHandler.RSSFeeds.Count() < 1)
+            if (RSSFeedHandler.GetInstance.RSSFeeds.Count() < 1)
             {
                 return;
             }
             RSSFeed feed = GetSelectedFeed();
-            _rssFeedHandler.DeleteFeed(feed, RefreshFeedToLastItem);
+            RSSFeedHandler.GetInstance.DeleteFeed(feed, RefreshFeedToLastItem);
         }
         #endregion
 
         #region helpers functions
         RSSFeed GetSelectedFeed()
         {
-            string feedName = lstBoxFeed.SelectedItem.ToString();
-            return _rssFeedHandler.RSSFeeds[feedName];
+            return RSSFeedHandler.GetInstance.RSSFeeds[lstBoxFeed.SelectedItem.ToString().Split('(')[0].Trim()];
         }
         #endregion
     }

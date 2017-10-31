@@ -56,6 +56,7 @@
     <Compile Include="errorhandling\exceptions\UpdateFrequencyNotANumberException.cs" />
     <Compile Include="errorhandling\exceptions\UrlInvalidException.cs" />
     <Compile Include="errorhandling\InputValidation.cs" />
+    <Compile Include="logic\rssfeed\CategoryHandler.cs" />
     <Compile Include="logic\rssfeed\CustomXmlReader.cs" />
     <Compile Include="logic\rssfeed\RSSFeedHandler.cs" />
     <Compile Include="logic\rssfeed\RSSFeedXmlDataParser.cs" />
@@ -69,6 +70,18 @@
     </Compile>
     <Compile Include="ui\AddFeedPopup.Designer.cs">
       <DependentUpon>AddFeedPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\EditCategoriesPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\EditCategoriesPopup.Designer.cs">
+      <DependentUpon>EditCategoriesPopup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ui\EnterCategoryPopup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ui\EnterCategoryPopup.Designer.cs">
+      <DependentUpon>EnterCategoryPopup.cs</DependentUpon>
     </Compile>
     <Compile Include="ui\MainView.cs">
       <SubType>Form</SubType>
@@ -89,6 +102,12 @@
     </Compile>
     <EmbeddedResource Include="ui\AddFeedPopup.resx">
       <DependentUpon>AddFeedPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\EditCategoriesPopup.resx">
+      <DependentUpon>EditCategoriesPopup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ui\EnterCategoryPopup.resx">
+      <DependentUpon>EnterCategoryPopup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ui\MainView.resx">
       <DependentUpon>MainView.cs</DependentUpon>
