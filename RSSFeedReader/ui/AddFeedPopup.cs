@@ -89,6 +89,10 @@ namespace RSSFeedReader.ui
         {
             _feedName = tbFeedName.Text;
             _feedUrl = tbFeedUrl.Text;
+            if (cbCategory.SelectedIndex == -1)
+            {
+                cbCategory.SelectedIndex = 0;
+            }
             _feedCategory = (string) cbCategory.Items[cbCategory.SelectedIndex];
             _feedUpdateFrequencyUnit = (string) cbUpdateFrequency.Items[cbCategory.SelectedIndex];
             _feedUpdateFrequencyValue = tbUpdateFrequency.Text;

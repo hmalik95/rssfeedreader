@@ -13,5 +13,10 @@ namespace RSSFeedReader.errorhandling.exceptions
                 return _dialogErrorMsg;
             }
         }
+
+        public virtual void PostExceptionAction(object o)
+        {
+            Console.WriteLine(_dialogErrorMsg);
+        }
     }
 }

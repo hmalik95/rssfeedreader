@@ -39,10 +39,10 @@
             this.lstBoxFeed = new System.Windows.Forms.ListBox();
             this.lblFeed = new System.Windows.Forms.Label();
             this.btnDelete = new System.Windows.Forms.Button();
-            this.rssFeedTextBox = new System.Windows.Forms.RichTextBox();
             this.lstBoxFeedItems = new System.Windows.Forms.ListBox();
             this.lblItemListBox = new System.Windows.Forms.Label();
             this.cbFeedCategoryFilter = new System.Windows.Forms.ComboBox();
+            this.wbRssFeed = new System.Windows.Forms.WebBrowser();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +52,7 @@
             this.menuBarMenuButton});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1040, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1085, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -127,21 +127,12 @@
             this.btnDelete.Text = "Delete";
             this.btnDelete.UseVisualStyleBackColor = true;
             // 
-            // rssFeedTextBox
-            // 
-            this.rssFeedTextBox.Location = new System.Drawing.Point(390, 57);
-            this.rssFeedTextBox.Name = "rssFeedTextBox";
-            this.rssFeedTextBox.ReadOnly = true;
-            this.rssFeedTextBox.Size = new System.Drawing.Size(638, 485);
-            this.rssFeedTextBox.TabIndex = 5;
-            this.rssFeedTextBox.Text = "";
-            // 
             // lstBoxFeedItems
             // 
             this.lstBoxFeedItems.FormattingEnabled = true;
             this.lstBoxFeedItems.Location = new System.Drawing.Point(196, 57);
             this.lstBoxFeedItems.Name = "lstBoxFeedItems";
-            this.lstBoxFeedItems.Size = new System.Drawing.Size(188, 485);
+            this.lstBoxFeedItems.Size = new System.Drawing.Size(188, 537);
             this.lstBoxFeedItems.TabIndex = 6;
             // 
             // lblItemListBox
@@ -161,15 +152,23 @@
             this.cbFeedCategoryFilter.Size = new System.Drawing.Size(176, 21);
             this.cbFeedCategoryFilter.TabIndex = 8;
             // 
+            // wbRssFeed
+            // 
+            this.wbRssFeed.Location = new System.Drawing.Point(391, 57);
+            this.wbRssFeed.MinimumSize = new System.Drawing.Size(20, 20);
+            this.wbRssFeed.Name = "wbRssFeed";
+            this.wbRssFeed.Size = new System.Drawing.Size(682, 538);
+            this.wbRssFeed.TabIndex = 9;
+            // 
             // MainView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1040, 547);
+            this.ClientSize = new System.Drawing.Size(1085, 607);
+            this.Controls.Add(this.wbRssFeed);
             this.Controls.Add(this.cbFeedCategoryFilter);
             this.Controls.Add(this.lblItemListBox);
             this.Controls.Add(this.lstBoxFeedItems);
-            this.Controls.Add(this.rssFeedTextBox);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.lblFeed);
             this.Controls.Add(this.lstBoxFeed);
@@ -196,12 +195,12 @@
         private System.Windows.Forms.ListBox lstBoxFeed;
         private System.Windows.Forms.Label lblFeed;
         private System.Windows.Forms.Button btnDelete;
-        private System.Windows.Forms.RichTextBox rssFeedTextBox;
         private System.Windows.Forms.ListBox lstBoxFeedItems;
         private System.Windows.Forms.Label lblItemListBox;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItemEditCategories;
         private System.Windows.Forms.ComboBox cbFeedCategoryFilter;
+        private System.Windows.Forms.WebBrowser wbRssFeed;
     }
 
 }

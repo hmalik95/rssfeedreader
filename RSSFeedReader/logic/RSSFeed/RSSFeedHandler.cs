@@ -63,7 +63,7 @@ namespace RSSFeedReader.logic.RSSFeedLogic
                 RSSFeed rssFeed = new RSSFeed(name, url, category, updateFrequencyValue, updateFrequencyUnit);
                 SyndicationFeed feed = await GetRSSFeedAsync(url);
                 rssFeed.LastFetchedFeed = Util.Atom10ToXmlString(feed.GetAtom10Formatter());
-                SaveRSSFeedToFile(rssFeed);
+                SaveRSSFeedToFile(rssFeed, true);
                 onComplete?.Invoke();
             });
         }
@@ -84,14 +84,17 @@ namespace RSSFeedReader.logic.RSSFeedLogic
             return await RSSFeedRetrieval.GetRSSFeedByUrl(url);
         }
 
-        public void SaveRSSFeedToFile(RSSFeed rssFeed)
+        public void SaveRSSFeedToFile(RSSFeed rssFeed, bool newFeed = false)
         {
             // Write each directory name to a file.
             using (StreamWriter sw = new StreamWriter(Path.Combine(_rssFeedPath, rssFeed.Name + ".xml")))
             {
                 sw.WriteLine(rssFeed.GetXmlRepresentation());
             }
-            _rssFeeds.Add(rssFeed.Name, rssFeed);
+            if (newFeed)
+            { 
+                _rssFeeds.Add(rssFeed.Name, rssFeed);
+            }
         }
 
         void LoadAllRSSFeeds()

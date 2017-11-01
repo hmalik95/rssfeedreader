@@ -29,5 +29,10 @@ namespace RSSFeedReader.errorhandling
                 return false;
             }
         }
+
+        public static bool IsStringEmpty(string s)
+        {
+            return string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s);
+        }
     }
 }

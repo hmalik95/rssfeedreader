@@ -94,29 +94,40 @@ namespace RSSFeedReader
         {
             if (RSSFeedHandler.GetInstance.RSSFeeds.Count() < 1)
             {
-                rssFeedTextBox.Text = "No feeds";
                 return;
             }
             lstBoxFeed.SelectedIndex = index;
             RSSFeed rssFeed = GetSelectedFeed();
-            rssFeedTextBox.Text = rssFeed.LastFetchedFeed;
             _currentRssFeedItems = RSSFeedXmlDataParser.GetRSSFeedItems(rssFeed.LastFetchedFeed);
             SetRSSFeedItems();
         }
 
         void ShowRSSFeedItemDetails(object sender, EventArgs e)
         {
+            RSSFeed rssFeed = GetSelectedFeed();
+
             int selectedIndex = lstBoxFeedItems.SelectedIndex;
             RSSFeedItem rssFeedItem = _currentRssFeedItems[selectedIndex];
-            rssFeedTextBox.Text = rssFeedItem.Summary;
+
+            lstBoxFeedItems.Items[selectedIndex] = rssFeedItem.Title;
+
+            rssFeed.ActionIdentifiers.Add(rssFeedItem.Id);
+            rssFeed.Save();
+            wbRssFeed.DocumentText = rssFeedItem.GetHtmlRepresentation();
         }
 
         void SetRSSFeedItems()
         {
             lstBoxFeedItems.Items.Clear();
+            RSSFeed rssFeed = GetSelectedFeed();
             foreach(RSSFeedItem item in _currentRssFeedItems)
             {
-                lstBoxFeedItems.Items.Add(item.Title);
+                string title = item.Title;
+                if (!rssFeed.ActionIdentifiers.Contains(item.Id))
+                {
+                    title = string.Format("{0} {1}", "[UNREAD]", title);
+                }
+                lstBoxFeedItems.Items.Add(title);
             }
         }
         #endregion

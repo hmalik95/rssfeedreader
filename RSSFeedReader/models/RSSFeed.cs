@@ -87,7 +87,8 @@ namespace RSSFeedReader.Models
 
         public override void Save()
         {
-            // TODO see if needed to save from instance
+            base.Save();
+            RSSFeedHandler.GetInstance.SaveRSSFeedToFile(this);
         }
         #endregion
 

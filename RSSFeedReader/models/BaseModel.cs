@@ -26,7 +26,10 @@ namespace RSSFeedReader.models
         }
 
         abstract public string GetXmlRepresentation();
-        
-        abstract public void Save();
+
+        virtual public void Save()
+        {
+            Console.WriteLine("SAVING AT: " + DateTime.Now);
+        }
     }
 }

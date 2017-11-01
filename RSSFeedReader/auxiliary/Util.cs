@@ -16,7 +16,6 @@ namespace RSSFeedReader.auxiliary
 
         public static string Atom10ToJsonString(Atom10FeedFormatter feed)
         {
-            
             XmlDocument xmlRep = new XmlDocument();
             xmlRep.LoadXml(Atom10ToXmlString(feed));
             return JsonConvert.SerializeXmlNode(xmlRep);
@@ -30,7 +29,7 @@ namespace RSSFeedReader.auxiliary
                 {
                     feed.WriteTo(xw);
                 }
-                return sw.ToString();
+                return sw.ToString(); 
             }
         }
 
@@ -39,7 +38,7 @@ namespace RSSFeedReader.auxiliary
 #if DEBUG
             foreach (string msg in msgs)
             {
-                Console.WriteLine(msg); // watch this bitch
+                Console.WriteLine(msg); 
             }
 #endif
         }

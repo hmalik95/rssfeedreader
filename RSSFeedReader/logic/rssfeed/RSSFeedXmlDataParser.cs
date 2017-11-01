@@ -27,7 +27,8 @@ namespace RSSFeedReader.logic.rssfeed
                 string title = item.Title.Text;
                 string summary = item.Summary.Text;
                 List<SyndicationLink> links = item.Links.ToList();
-                RSSFeedItem rssFeedItem = new RSSFeedItem(title, summary, links);
+                string id = item.Id;
+                RSSFeedItem rssFeedItem = new RSSFeedItem(title, summary, id, links);
                 rssFeedItems.Add(rssFeedItem);
             }
 
