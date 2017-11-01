@@ -34,6 +34,12 @@ namespace RSSFeedReader
         }
 
         #region instantiation and refresh
+        void ClearForFilter()
+        {
+            lstBoxFeedItems.Items.Clear();
+            wbRssFeed.DocumentText = "";
+        }
+
         void PopulateViews()
         {
             SetFeeds();
@@ -59,7 +65,7 @@ namespace RSSFeedReader
             addNewFeedToolStripMenuItem.Click += AddNewFeed;
             toolStripMenuItemEditCategories.Click += EditCategories;
             btnDelete.Click += DeleteSelectedFeed;
-            lstBoxFeed.Click += SelectFeedToDisplay;
+            lstBoxFeed.SelectedIndexChanged += SelectFeedToDisplay;
             lstBoxFeedItems.Click += ShowRSSFeedItemDetails;
             cbFeedCategoryFilter.SelectionChangeCommitted += FilterFeeds;
         }
@@ -79,6 +85,10 @@ namespace RSSFeedReader
             foreach (RSSFeed feed in feeds)
             {
                 lstBoxFeed.Items.Add(string.Format("{0} ({1})", feed.Name, feed.Category));
+            }
+            if (feeds.Count() > 0)
+            {
+                ShowFeed(0);
             }
         }
 
@@ -104,9 +114,14 @@ namespace RSSFeedReader
 
         void ShowRSSFeedItemDetails(object sender, EventArgs e)
         {
+            if (lstBoxFeed.Items.Count < 1)
+            {
+                return;
+            }
             RSSFeed rssFeed = GetSelectedFeed();
 
             int selectedIndex = lstBoxFeedItems.SelectedIndex;
+
             RSSFeedItem rssFeedItem = _currentRssFeedItems[selectedIndex];
 
             lstBoxFeedItems.Items[selectedIndex] = rssFeedItem.Title;
@@ -145,6 +160,11 @@ namespace RSSFeedReader
 
             List<RSSFeed> filteredFeedList = RSSFeedHandler.GetInstance.RSSFeeds.Values.Where<RSSFeed>(x => string.Equals(x.Category, category)).ToList();
             SetFeeds(filteredFeedList);
+            ClearForFilter();
+            if (filteredFeedList.Count() > 0)
+            {
+                ShowFeed(0);
+            }
         }
 
         void EditCategories(object sender, EventArgs e)
@@ -195,7 +215,7 @@ namespace RSSFeedReader
                     string feedUrl = _addFeedPopup.FeedUrl;
                     string feedCategory = _addFeedPopup.FeedCategory;
 
-                    // Check validity of entered url
+                    // Check validity of entered url string
                     string feedUpdateFrequencyUnit = _addFeedPopup.FeedUpdateFrequencyUnit;
                     if (!InputValidation.IsUrlValid(feedUrl))
                     {
