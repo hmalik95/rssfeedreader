@@ -101,6 +101,11 @@ namespace RSSFeedReader.logic.RSSFeedLogic
         {
             _rssFeeds = new Dictionary<string, RSSFeed>();
 
+            if (!Directory.Exists(_rssFeedPath))
+            {
+                Directory.CreateDirectory(_rssFeedPath);
+            }
+
             string[] allRSSFeedPaths = Directory.GetFiles(_rssFeedPath);
             foreach (string path in allRSSFeedPaths)
             {
